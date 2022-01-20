@@ -34,6 +34,7 @@ using namespace std;
     krolowa = 'q'
     krol = 'k'
     mozliwe ruchy ='*'
+    mozliwe bicia = 'x'
     */
     //puste pole = 0 lub 1 -> czarny 0, bialy 1
 
@@ -77,7 +78,8 @@ Vector2i to_vector2i(Vector2f v){
     void plansza::figdraw(RenderWindow& window){
         for (int i=0;i<8;i++){
             for (int j=0;j<8;j++){
-                figtab[i*8+j].draw(window,{i*boxHeight,j*boxWidth},actualboardstate.tab[i][j]);
+                if(figtab[i*8+j].typ)
+                    figtab[i*8+j].draw(window,{i*boxHeight,j*boxWidth},actualboardstate.tab[i][j]);
             }
         }
     }

@@ -44,7 +44,7 @@ class kwadrat{
     void move(Vector2f v);
 };
 class plansza{
-    boardstate actualboardstate;
+    boardstate actualboardstate,moves;
     vector<kwadrat> tab;
     vector<Figura> figtab;
     public:
