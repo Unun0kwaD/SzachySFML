@@ -15,13 +15,11 @@
 using namespace sf;
 using namespace std;
 
-struct boardstate{
-    char tab[8][8];
     
-    void reset(){
+    void boardstate::reset(){
 
     }
-    void ruch(){
+    void boardstate::ruch(){
 
     }
      //plansza
@@ -37,7 +35,7 @@ struct boardstate{
     mozliwe ruchy ='*'
     */
     //puste pole = 0 lub 1 -> czarny 0, bialy 1
-};
+
 
 Vector2f to_vector2f(Vector2i v){
     return {static_cast<float>(v.x),static_cast<float>(v.y)};
@@ -45,42 +43,32 @@ Vector2f to_vector2f(Vector2i v){
 Vector2i to_vector2i(Vector2f v){
     return {static_cast<int>(v.x),static_cast<int>(v.y)};
 }
-class kwadrat{
-    sf::RectangleShape box;
-    public:
-    kwadrat(Vector2f v,int c){
+    kwadrat::kwadrat(Vector2f v,int c){
         box.setPosition(v.x,v.y);
         box.setSize(to_vector2f({boxWidth,boxHeight}));
         if (c==1) box.setFillColor(Color::Black);
         else if (!c) box.setFillColor(Color::White); 
         else if (c==3) box.setFillColor(Color::Blue);
     }
-    void draw(RenderWindow& window){
+    void kwadrat::draw(RenderWindow& window){
         window.draw(box);
         //(*zawartosc).draw(window);
     }
-    void move(Vector2f v){
+    void kwadrat::move(Vector2f v){
         box.setPosition(v);
     }
-};
 
-class plansza{
-    boardstate actualboardstate;
-    vector<kwadrat> tab;
-    public:
-    plansza(){
+    plansza::plansza(){
         for (int i=0;i<8;i++){
             for (int j=0;j<8;j++){
                 tab.emplace_back(to_vector2f({i*boxWidth,j*boxHeight}),(i+j)%2);
             }
         }
     }
-    void draw(RenderWindow& window){
+    void plansza::draw(RenderWindow& window){
         for (int i=0;i<8;i++){
             for (int j=0;j<8;j++){
                 tab[i*8+j].draw(window);
             }
         }
     }
-
-};

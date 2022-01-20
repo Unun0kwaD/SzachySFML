@@ -24,7 +24,7 @@ int main(){
     RenderWindow window{{windowWidth,windowHeight},"_ _ARKANOID_ _",sf::Style::Default,settings};
     window.setFramerateLimit(60);
     plansza szachownica;
-    pionek pawn('b');
+    Figura pawn('p');
     kwadrat pointer(to_vector2f({0,0}), 3);
     while(true){
         Vector2i mouse_position =Mouse::getPosition( window);
