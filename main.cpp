@@ -24,7 +24,6 @@ int main(){
     RenderWindow window{{windowWidth,windowHeight},"_ _ARKANOID_ _",sf::Style::Default,settings};
     window.setFramerateLimit(60);
     plansza szachownica;
-    Figura pawn('p');
     kwadrat pointer(to_vector2f({0,0}), 3);
     while(true){
         Vector2i mouse_position =Mouse::getPosition( window);
@@ -39,12 +38,12 @@ int main(){
                 // window closed
                 case sf::Event::Closed:
                     window.close();
+                    return 0;
                     break;
 
                 // key pressed
                 case sf::Event::MouseButtonPressed:
-                    if (wskaznik==pawn.position())
-                        pawn.select();
+                    //
                     break;
 
                 // we don't process other types of events
@@ -54,7 +53,6 @@ int main(){
         }
         szachownica.draw(window);
         pointer.draw(window);
-        pawn.draw(window,wskaznik);
         window.display();
     }
 }

@@ -17,8 +17,9 @@ class Figura{
     Texture tex;
     Sprite sprite;
     public: 
-    char typ;
     /* Typy
+    male biale
+    duze czarne
     pion = 'p'
     wieza = 'w'
     skoczek = 's'
@@ -26,9 +27,12 @@ class Figura{
     krolowa = 'q'
     krol = 'k'
     */
-    Figura(char intyp);
+    char typ;
+    void changetype(char intyp);
+    Figura(char intyp,Vector2i v);
     void move(Vector2i v);
-    void draw(RenderWindow& window,Vector2i v);
+    void draw(RenderWindow& window,Vector2i v,char intyp);
+    //void Figura::draw(RenderWindow& window);
     void select();
     Vector2i position();
 };

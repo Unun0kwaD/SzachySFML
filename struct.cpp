@@ -26,6 +26,7 @@ using namespace std;
     //male znaki biale
     //duze znaki czarne
     /* PIONY
+    puste = '0'
     pion = 'p'
     wieza = 'w'
     skoczek = 's'
@@ -62,6 +63,7 @@ Vector2i to_vector2i(Vector2f v){
         for (int i=0;i<8;i++){
             for (int j=0;j<8;j++){
                 tab.emplace_back(to_vector2f({i*boxWidth,j*boxHeight}),(i+j)%2);
+                figtab.emplace_back(actualboardstate.tab[i][j],to_vector2i({i*boxWidth,j*boxHeight}));
             }
         }
     }
@@ -69,6 +71,7 @@ Vector2i to_vector2i(Vector2f v){
         for (int i=0;i<8;i++){
             for (int j=0;j<8;j++){
                 tab[i*8+j].draw(window);
+                figtab[i*8+j].draw(window,{i*boxHeight,j*boxWidth},actualboardstate.tab[i][j]);
             }
         }
     }
