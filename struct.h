@@ -15,12 +15,22 @@
 #include <stdlib.h>
 #include <vector>
 #include <SFML/Graphics/Sprite.hpp>
+#include "figury.h"
 
 using namespace sf;
 using namespace std;
 
 struct boardstate{
-    char tab[8][8];
+    char tab[8][9]={
+            "wsgkqgsw",
+            "pppppppp",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "PPPPPPPP",
+            "00000000"
+        };
     void reset();
     void ruch();
 };
@@ -36,6 +46,7 @@ class kwadrat{
 class plansza{
     boardstate actualboardstate;
     vector<kwadrat> tab;
+    vector<Figura> figtab;
     public:
     plansza();
     void draw(RenderWindow& window);
