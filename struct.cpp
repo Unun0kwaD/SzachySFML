@@ -71,6 +71,12 @@ Vector2i to_vector2i(Vector2f v){
         for (int i=0;i<8;i++){
             for (int j=0;j<8;j++){
                 tab[i*8+j].draw(window);
+            }
+        }
+    }
+    void plansza::figdraw(RenderWindow& window){
+        for (int i=0;i<8;i++){
+            for (int j=0;j<8;j++){
                 figtab[i*8+j].draw(window,{i*boxHeight,j*boxWidth},actualboardstate.tab[i][j]);
             }
         }

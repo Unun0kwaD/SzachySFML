@@ -29,7 +29,7 @@ struct boardstate{
             "00000000",
             "00000000",
             "PPPPPPPP",
-            "00000000"
+            "WSGKQGSW"
         };
     void reset();
     void ruch();
@@ -50,4 +50,5 @@ class plansza{
     public:
     plansza();
     void draw(RenderWindow& window);
+    void figdraw(RenderWindow& window);
 };

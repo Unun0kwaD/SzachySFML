@@ -53,6 +53,7 @@ int main(){
         }
         szachownica.draw(window);
         pointer.draw(window);
+        szachownica.figdraw(window);
         window.display();
     }
 }
