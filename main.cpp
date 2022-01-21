@@ -25,6 +25,7 @@ int main(){
     window.setFramerateLimit(60);
     plansza szachownica;
     kwadrat pointer(to_vector2f({0,0}), 3);
+    kwadrat selected(to_vector2f({-1,-1}), 4);
     Vector2i select={-1,-1};
     char player='a';//'A'-black 'a' - white
     while(true){
@@ -66,8 +67,10 @@ int main(){
                     break;
             }
         }
+        selected.move(to_vector2f(select*boxHeight));
         szachownica.draw(window);
         pointer.draw(window);
+        selected.draw(window);
         szachownica.figdraw(window);
         window.display();
     }

@@ -54,6 +54,7 @@ Vector2i to_vector2i(Vector2f v){
         if (c==1) box.setFillColor(Color::Black);
         else if (!c) box.setFillColor(Color::White); 
         else if (c==3) box.setFillColor(Color::Blue);
+        else if (c==4) box.setFillColor(Color::Green);
     }
     void kwadrat::draw(RenderWindow& window){
         window.draw(box);
