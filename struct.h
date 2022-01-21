@@ -31,6 +31,7 @@ struct boardstate{
             "PPPPPPPP",
             "WSGKQGSW"
         };
+    char checkpiece(Vector2i v);
     void reset();
     void ruch();
 };
@@ -44,11 +45,12 @@ class kwadrat{
     void move(Vector2f v);
 };
 class plansza{
-    boardstate actualboardstate,moves;
     vector<kwadrat> tab;
     vector<Figura> figtab;
     public:
+    boardstate actualboardstate,moves;
     plansza();
     void draw(RenderWindow& window);
     void figdraw(RenderWindow& window);
+    char checkpiece(Vector2i v);
 };

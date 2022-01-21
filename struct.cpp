@@ -22,6 +22,9 @@ using namespace std;
     void boardstate::ruch(){
 
     }
+    char boardstate::checkpiece(Vector2i v){
+        return tab[v.x][v.y];
+    }
      //plansza
     //male znaki biale
     //duze znaki czarne
@@ -82,4 +85,8 @@ Vector2i to_vector2i(Vector2f v){
                     figtab[i*8+j].draw(window,{i*boxHeight,j*boxWidth},actualboardstate.tab[i][j]);
             }
         }
+    }
+
+    char plansza::checkpiece(Vector2i v){
+        return actualboardstate.checkpiece(v);
     }

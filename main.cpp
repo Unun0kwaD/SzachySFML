@@ -21,13 +21,16 @@ int main(){
 
     ContextSettings settings;
     settings.antialiasingLevel = 8;
-    RenderWindow window{{windowWidth,windowHeight},"_ _ARKANOID_ _",sf::Style::Default,settings};
+    RenderWindow window{{windowWidth,windowHeight},"CHESS",sf::Style::Default,settings};
     window.setFramerateLimit(60);
     plansza szachownica;
     kwadrat pointer(to_vector2f({0,0}), 3);
+    Vector2i select={-1,-1};
+    char player='a';//'A'-black 'a' - white
     while(true){
         Vector2i mouse_position =Mouse::getPosition( window);
         Vector2i wskaznik=mouse_position/boxHeight;
+        cout<<select.x<<"\t"<<select.y<<"\n";
         wskaznik*=boxHeight;
         pointer.move(to_vector2f(wskaznik));
         sf::Event event;
@@ -43,7 +46,19 @@ int main(){
 
                 // key pressed
                 case sf::Event::MouseButtonPressed:
-                    //
+                    if (event.mouseButton.button == sf::Mouse::Left)
+                    {
+                        Vector2i tmp=Mouse::getPosition(window)/(int)boxHeight;
+                        //select new piece
+                        if(select==(Vector2i){-1,-1} && szachownica.checkpiece(tmp)>player &&szachownica.checkpiece(tmp)<player+26 )
+                            select=tmp;
+                        // moves should return table of possible moves from Vector on boardstate
+                       // else if (moves(select,szachownica.actualboardstate)[tmp.x][tmp.y]=='*' ||moves(select,szachownica.actualboardstate)[tmp.x][tmp.y]=='x')
+                            //try to move selected piecefrom select to mouse actual position
+                    }
+                    else if(event.mouseButton.button == sf::Mouse::Right){
+                        select={-1,-1};
+                    }
                     break;
 
                 // we don't process other types of events
