@@ -35,6 +35,7 @@ struct boardstate{
     void reset();
     void ruch();
 };
+boardstate moves(Vector2i v, boardstate board);
 Vector2f to_vector2f(Vector2i v);
 Vector2i to_vector2i(Vector2f v);
 class kwadrat{
