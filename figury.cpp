@@ -13,12 +13,31 @@
 #include <vector>
 #include <SFML/Graphics/Sprite.hpp>
 
+char turn(char typ){
+    if(typ>='a')
+        return 'a';
+    else if (typ>='A')
+        return 'A';
+    else return '0';
+}
+
+void Figura::toqueen(){
+    Texture tex2;
+    if (typ>'A'){
+        tex2.loadFromFile("128px/b_queen_png_shadow_128px.png");
+    }
+    else 
+        tex2.loadFromFile("128px/w_queen_png_shadow_128px.png");
+    tex=tex2;
+    sprite.setTexture(tex2);
+}
 void Figura::changetype(char intyp){
     typ=intyp;
     switch(intyp)
     {
     case 'p':
         tex.loadFromFile("128px/w_pawn_png_shadow_128px.png");
+        //cerr<<"loaded\n";
         break;
     case 'P':
         tex.loadFromFile("128px/b_pawn_png_shadow_128px.png");
@@ -57,22 +76,28 @@ void Figura::changetype(char intyp){
     sprite.setTexture(tex);
 
 }
-Figura::Figura(char intyp,Vector2i v){
+
+Figura::Figura(Vector2f v,char intyp){
+   // tex.create(128,128);
+   initialstate=1;
     changetype(intyp);
     move(v);
 }; 
 
-void Figura::move(Vector2i v){
-    sprite.setPosition(v.x, v.y);
+void Figura::move(Vector2f v){
+    sprite.setPosition(v.x*boxWidth, v.y*boxHeight);
 }
 /*
 void Figura::draw(RenderWindow& window){
     window.draw(sprite);
 }
 */
-void Figura::draw(RenderWindow& window,Vector2i v,char intyp){
+ void Figura::set(Vector2f v,char intyp){
     changetype(intyp);
     move(v);
+ }
+void Figura::draw(RenderWindow& window,Vector2f v,char typ){
+    set(v,typ);
     window.draw(sprite);
 }
 void Figura::select(){

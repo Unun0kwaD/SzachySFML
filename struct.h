@@ -21,6 +21,7 @@ using namespace sf;
 using namespace std;
 
 struct boardstate{
+    public:
     char tab[8][9]={
             "wsgkqgsw",
             "pppppppp",
@@ -33,9 +34,11 @@ struct boardstate{
         };
     char checkpiece(Vector2i v);
     void reset();
-    void ruch();
+    void drawmoves(RenderWindow& window);
+    void clear();
+    void ruch(Vector2i f,Vector2i t);
 };
-boardstate moves(Vector2i v, boardstate board);
+boardstate moves(Vector2i v, boardstate board,int initialstate);
 Vector2f to_vector2f(Vector2i v);
 Vector2i to_vector2i(Vector2f v);
 class kwadrat{
@@ -48,10 +51,15 @@ class kwadrat{
 class plansza{
     vector<kwadrat> tab;
     vector<Figura> figtab;
+    int postab[8][8];
     public:
-    boardstate actualboardstate,moves;
+    boardstate actualboardstate;
     plansza();
+    int return_state(Vector2i v);
+    void change_state(Vector2i v,int n);
+    void printtab();
     void draw(RenderWindow& window);
     void figdraw(RenderWindow& window);
     char checkpiece(Vector2i v);
+    bool ruch(Vector2i f, Vector2i t);
 };

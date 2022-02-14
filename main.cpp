@@ -24,14 +24,17 @@ int main(){
     RenderWindow window{{windowWidth,windowHeight},"CHESS",sf::Style::Default,settings};
     window.setFramerateLimit(60);
     plansza szachownica;
+    boardstate ruchy;
+    ruchy.clear();
     kwadrat pointer(to_vector2f({0,0}), 3);
     kwadrat selected(to_vector2f({-1,-1}), 4);
     Vector2i select={-1,-1};
+    int s=0;
     char player='a';//'A'-black 'a' - white
     while(true){
         Vector2i mouse_position =Mouse::getPosition( window);
         Vector2i wskaznik=mouse_position/boxHeight;
-        cout<<select.x<<"\t"<<select.y<<"\n";
+        //cout<<wskaznik.x<<"\t"<<wskaznik.y<<"\n";
         wskaznik*=boxHeight;
         pointer.move(to_vector2f(wskaznik));
         sf::Event event;
@@ -49,19 +52,45 @@ int main(){
                 case sf::Event::MouseButtonPressed:
                     if (event.mouseButton.button == sf::Mouse::Left)
                     {
-                        Vector2i tmp=Mouse::getPosition(window)/(int)boxHeight;
+                        Vector2i tmp=wskaznik/boxHeight;
                         //select new piece
-                        if(select==(Vector2i){-1,-1} && szachownica.checkpiece(tmp)>player &&szachownica.checkpiece(tmp)<player+26 )
+                        //cout<<"select1\n";
+                        if(s<=0 && turn(szachownica.checkpiece(tmp))==player ) {// player && szachownica.checkpiece(tmp)<(int)player+26 ){
                             select=tmp;
+                            s=1;
+                            //cout<<"select2\n";
+                            //cout<<szachownica.return_state(select);
+                            ruchy=moves(select,szachownica.actualboardstate,szachownica.return_state(select));
+                        }
                         // moves should return table of possible moves from Vector on boardstate
-                       // else if (moves(select,szachownica.actualboardstate)[tmp.x][tmp.y]=='*' ||moves(select,szachownica.actualboardstate)[tmp.x][tmp.y]=='x')
+                       /* else if (moves(select,szachownica.actualboardstate)[tmp.x][tmp.y]=='*' ||moves(select,szachownica.actualboardstate)[tmp.x][tmp.y]=='x')
                             //try to move selected piecefrom select to mouse actual position
+                           // szachownica.actualboardstate.ruch(select,tmp);
+                           */
+                        else if(s==1 && ruchy.tab[tmp.x][tmp.y]!='0' && !(select.x==tmp.x && select.y==tmp.y)){
+                            //cout<<"select3\n";
+                            if (szachownica.ruch(select,tmp)){
+                                s=0;
+                                if(player=='A')
+                                    player='a';
+                                else if(player=='a')
+                                    player='A';
+                               
+                            }
+                            ruchy.clear();
+                            szachownica.change_state(tmp,0);
+                            select={-1,-1};
+                        }
+                        //else
+                          //  s=-1;  
                     }
                     else if(event.mouseButton.button == sf::Mouse::Right){
+                        s=0;
                         select={-1,-1};
+                        ruchy.clear();
+                        //szachownica.printtab();
                     }
                     break;
-
                 // we don't process other types of events
                 default:
                     break;
@@ -69,6 +98,7 @@ int main(){
         }
         selected.move(to_vector2f(select*boxHeight));
         szachownica.draw(window);
+        ruchy.drawmoves(window);
         pointer.draw(window);
         selected.draw(window);
         szachownica.figdraw(window);
