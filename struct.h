@@ -61,5 +61,9 @@ class plansza{
     void draw(RenderWindow& window);
     void figdraw(RenderWindow& window);
     char checkpiece(Vector2i v);
-    bool ruch(Vector2i f, Vector2i t);
+    bool ruch(Vector2i f, Vector2i t,RenderWindow& window);
+    int szach();
+    int mat=0;
 };
+
+void write_text(RenderWindow& okno,string tekst,Vector2f pos);

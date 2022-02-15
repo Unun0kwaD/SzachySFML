@@ -68,12 +68,13 @@ boardstate moves(Vector2i v, boardstate board,int initialstate){
     {
     case 'p':
         if(v.x<7){
-            if (board.tab[v.x+1][v.y]=='0')
+            if (board.tab[v.x+1][v.y]=='0'){
                 moves.tab[v.x+1][v.y]='*';
-            if (initialstate){
-                if (board.tab[v.x+2][v.y]=='0')
-                    moves.tab[v.x+2][v.y]='*';
-            }
+                if (initialstate){
+                    if (board.tab[v.x+2][v.y]=='0')
+                        moves.tab[v.x+2][v.y]='*';
+                }
+            }   
             if(v.y>0){
                 if (turn(board.tab[v.x+1][v.y-1])!='0' && turn(board.tab[v.x+1][v.y-1])!=turn(board.tab[v.x][v.y]))
                     moves.tab[v.x+1][v.y-1]='x';
@@ -86,11 +87,12 @@ boardstate moves(Vector2i v, boardstate board,int initialstate){
         break;
     case 'P':
         if(v.x>0){
-            if (board.tab[v.x-1][v.y]=='0')
+            if (board.tab[v.x-1][v.y]=='0'){
                 moves.tab[v.x-1][v.y]='*';
-            if (initialstate){
-                if (board.tab[v.x-2][v.y]=='0')
-                    moves.tab[v.x-2][v.y]='*';
+                if (initialstate){
+                    if (board.tab[v.x-2][v.y]=='0')
+                        moves.tab[v.x-2][v.y]='*';
+                }
             }
             if(v.y>0){
                 if (turn(board.tab[v.x-1][v.y-1])!='0' && turn(board.tab[v.x-1][v.y-1])!=turn(board.tab[v.x][v.y]))
@@ -256,8 +258,22 @@ Vector2i to_vector2i(Vector2f v){
     char plansza::checkpiece(Vector2i v){
         return actualboardstate.checkpiece(v);
     }
-    bool plansza::ruch(Vector2i f, Vector2i t){
+    bool plansza::ruch(Vector2i f, Vector2i t,RenderWindow& window){
         if (postab[f.x][f.y]>=0){
+            if (postab[t.x][t.y]>=0){
+                if(actualboardstate.tab[t.x][t.y]=='K' && turn(actualboardstate.tab[f.x][f.y])=='a'){
+                    write_text(window,"Mate",to_vector2f({windowWidth+10,200}));
+                    write_text(window,"White",to_vector2f({windowWidth+10,300}));
+                    write_text(window,"Won",to_vector2f({windowWidth+10,400}));
+                    mat=1;
+                }
+                if(actualboardstate.tab[t.x][t.y]=='k' && turn(actualboardstate.tab[f.x][f.y])=='A'){
+                    write_text(window,"Mate",to_vector2f({windowWidth+10,200}));
+                    write_text(window,"Black",to_vector2f({windowWidth+10,300}));
+                    write_text(window,"Won",to_vector2f({windowWidth+10,400}));
+                    mat=1;
+                }
+            }
             if(figtab[postab[f.x][f.y]].typ=='p' && t.x==7){
                 figtab[postab[f.x][f.y]].toqueen();
                 actualboardstate.tab[f.x][f.y]='q';
@@ -268,10 +284,7 @@ Vector2i to_vector2i(Vector2f v){
             }
             figtab[postab[f.x][f.y]].move(to_vector2f(t));
             if (postab[t.x][t.y]>=0){
-                if(actualboardstate.tab[t.x][t.y]=='K')
-                    cout<<"White won!\n";
-                if (actualboardstate.tab[t.x][t.y]=='k')
-                    cout<<"Black won!\n";
+                actualboardstate.tab[t.x][t.x]='0';
                 figtab[postab[t.x][t.y]].move(to_vector2f({-100,-100}));
             }
             postab[t.x][t.y]=postab[f.x][f.y];
@@ -296,5 +309,40 @@ Vector2i to_vector2i(Vector2f v){
     {
         figtab[postab[v.x][v.y]].initialstate=n;
     }
-
+    int plansza::szach(){
+        Vector2i krolw;
+        Vector2i krolb;
+        int szachw=0,szachb=0;
+        for (int i=0;i<8;i++){
+            for (int j=0;j<8;j++){
+                if (postab[i][j]>=0){
+                    if(actualboardstate.tab[i][j]=='K')
+                        krolb={i,j};
+                    if (actualboardstate.tab[i][j]=='k')
+                        krolw={i,j};
+                }
+            }
+        }
+        for (int i=0;i<8;i++){
+            for (int j=0;j<8;j++){
+                if (postab[i][j]>=0){
+                    if(actualboardstate.tab[i][j]!='K' && turn('K')==turn(actualboardstate.tab[i][j]))
+                        if (moves({i,j},actualboardstate,return_state({i,j})).tab[krolw.x][krolw.y]=='x')
+                            szachw=1;
+                    if(actualboardstate.tab[i][j]!='k' && turn('k')==turn(actualboardstate.tab[i][j]))
+                        if (moves({i,j},actualboardstate,return_state({i,j})).tab[krolb.x][krolb.y]=='x')
+                            szachb=1;
+                }
+            }
+        }
+        return szachb+szachw;
+        
+    }
+    void write_text(RenderWindow& okno,string tekst,Vector2f pos){
+        sf::Font font;
+        font.loadFromFile("arial.ttf");
+        sf::Text text(tekst, font, 50);
+        text.setPosition(pos);
+        okno.draw(text);
+    }
     

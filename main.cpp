@@ -21,7 +21,7 @@ int main(){
 
     ContextSettings settings;
     settings.antialiasingLevel = 8;
-    RenderWindow window{{windowWidth,windowHeight},"CHESS",sf::Style::Default,settings};
+    RenderWindow window{{windowWidth+200,windowHeight},"CHESS",sf::Style::Default,settings};
     window.setFramerateLimit(60);
     plansza szachownica;
     boardstate ruchy;
@@ -36,9 +36,12 @@ int main(){
         Vector2i wskaznik=mouse_position/boxHeight;
         //cout<<wskaznik.x<<"\t"<<wskaznik.y<<"\n";
         wskaznik*=boxHeight;
-        pointer.move(to_vector2f(wskaznik));
+        if(wskaznik.x>=0 && wskaznik.y>=0 && wskaznik.x<=900 && wskaznik.y<=900)
+            pointer.move(to_vector2f(wskaznik));
+        else
+            pointer.move(to_vector2f({-200,-200}));
         sf::Event event;
-        while (window.pollEvent(event))
+        while (window.pollEvent(event) && !szachownica.mat)
         {
             switch (event.type)
             {
@@ -69,7 +72,7 @@ int main(){
                            */
                         else if(s==1 && ruchy.tab[tmp.x][tmp.y]!='0' && !(select.x==tmp.x && select.y==tmp.y)){
                             //cout<<"select3\n";
-                            if (szachownica.ruch(select,tmp)){
+                            if (szachownica.ruch(select,tmp,window)){
                                 s=0;
                                 if(player=='A')
                                     player='a';
@@ -79,6 +82,10 @@ int main(){
                             }
                             ruchy.clear();
                             szachownica.change_state(tmp,0);
+                            if(szachownica.szach()>0 ){
+                                write_text(window,"Check",to_vector2f({windowWidth+10,100}));
+                            }
+                            else if(!szachownica.mat)   window.clear(Color::Black);
                             select={-1,-1};
                         }
                         //else
@@ -96,6 +103,7 @@ int main(){
                     break;
             }
         }
+        if(Keyboard::isKeyPressed(Keyboard::Key::Escape)) break;
         selected.move(to_vector2f(select*boxHeight));
         szachownica.draw(window);
         ruchy.drawmoves(window);
